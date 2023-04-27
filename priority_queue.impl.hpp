@@ -59,12 +59,14 @@ template <typename RandomIt>
 void pq::make_heap(RandomIt first, RandomIt last) {
     using namespace std;
 
+    /// TODO: implement with indexes
+
     auto size = distance(first, last);
     RandomIt midIter = next(first, size / 2); 
     RandomIt revMidIter = prev(make_reverse_iter(midIter));
     RandomIt revFirstIter = make_reverse_iterator(first);
     for(; revMidIter != revFirstIter; ++revMidIter) {
-        pq::heapify();
+        pq::heapify(); /// TODO: implement heapify
     }
 }
 
