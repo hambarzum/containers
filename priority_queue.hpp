@@ -2,10 +2,11 @@
 #define PRIORITY_QUEUE_HPP
 
 #include <functional> // std::less
+#include <iterator> // std::iterator_traits
 #include <vector>
 
 
-namespace pq{
+namespace pq {
 
 template <typename T, typename Container = std::vector<T>, typename Compare = std::less<typename Container::value_type>>
 class PriorityQueue {
@@ -45,7 +46,6 @@ public: // dtor
 
 public: // member functions
     const_reference top() const;
-    bool empty() const;
     [[nodiscard]] bool empty() const;
     size_type size() const;
     void push(const value_type& value);
@@ -56,20 +56,24 @@ public: // member functions
     void swap(PriorityQueue& other) noexcept;
 
 private:
-    
+    template <typename RandomIt> // should be InputIt, but standard says RandomIt => slicing
+    void makeHeap(RandomIt first, RandomIt last); /// TODO: make constexpr
+    template <typename RandomIt>
+    void makeHeap(RandomIt first, RandomIt last, Compare comp); /// TODO: make constexpr
+    template <typename RandomIt>
+    void heapify(RandomIt first, RandomIt last, RandomIt target, Compare comp);
+    /// size_t parent(size_t index);
+    template <typename RandIt>
+    RandIt getLeftChild(RandIt first, RandIt last, RandIt parent);
+    template <typename RandIt>
+    RandIt getRightChild(RandIt first, RandIt last, RandIt parent);
+    template <typename RandIt>
+    RandIt getChild(RandIt first, RandIt last, RandIt parent, typename std::iterator_traits<RandIt>::difference_type childId);
 
 private:
     Container c_;
     Compare comp_;
 }; // class PriorityQueue
-
-
-// won't let a private template function in a template class
-template <typename RandomIt> // should be InputIt, but standard says RandomIt
-void make_heap(RandomIt first, RandomIt last); /// TODO: make constexpr
-
-template <typename RandomIt, typename Compare>
-void make_heap(RandomIt first, RandomIt last, Compare comp); /// TODO: make constexpr
 
 } // namespace pq
 
