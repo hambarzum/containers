@@ -36,6 +36,27 @@ PriorityQueue<T, Container, Compare>::PriorityQueue(InputIt first, InputIt last,
 } // what's the semantics of this??
 
 template <typename T, typename Container, typename Compare>
+PriorityQueue<T, Container, Compare>::PriorityQueue(const PriorityQueue<T, Container, Compare>& other) 
+    : size_{other.size_}
+    , comp_{other.comp_}
+    , c_{other.c_}
+{
+
+}
+
+template <typename T, typename Container, typename Compare>
+PriorityQueue<T, Container, Compare>& PriorityQueue<T, Container, Compare>::operator=(const PriorityQueue<T, Container, Compare>& other) {
+    if(this == &other) {
+        return *this;
+    }
+    c_ = other.c_;
+    size_ = other.size_;
+    comp_ = other.comp_;
+
+    return *this;
+} // any exceptions expected??
+
+template <typename T, typename Container, typename Compare>
 PriorityQueue<T, Container, Compare>::~PriorityQueue() {
 // anything??
 }
@@ -66,7 +87,7 @@ void PriorityQueue<T, Container, Compare>::push(const typename PriorityQueue<T, 
 template <typename T, typename Container, typename Compare>
 template <typename RandomIt>
 void PriorityQueue<T, Container, Compare>::increaseKey(RandomIt first, RandomIt target) {
-    while(std::distance(first, target) > 0 && *getParent(first, target) < *target) {
+    while(std::distance(first, target) > 0 && comp_(*getParent(first, target), *target)) {
         std::swap(*getParent(first, target), *target);
         target = getParent(first, target);
     }
@@ -92,6 +113,13 @@ void PriorityQueue<T, Container, Compare>::pop() {
 }
 
 template <typename T, typename Container, typename Compare>
+void PriorityQueue<T, Container, Compare>::swap(PriorityQueue<T, Container, Compare>& other) noexcept {
+    std::swap(c_, other.c_);
+    std::swap(comp_, other.comp_); // maybe unnecessary?? doesnt let swap with different comparators anyway
+    std::swap(size_, other.size_);
+} // anything else for noexcept??
+
+template <typename T, typename Container, typename Compare>
 template <typename RandomIt>
 void PriorityQueue<T, Container, Compare>::makeHeap(RandomIt first, RandomIt last) {
     makeHeap(first, last, Compare());
@@ -99,7 +127,7 @@ void PriorityQueue<T, Container, Compare>::makeHeap(RandomIt first, RandomIt las
 
 template <typename T, typename Container, typename Compare>
 template <typename RandomIt>
-void PriorityQueue<T, Container, Compare>::makeHeap(RandomIt first, RandomIt last, const Compare& comp) { // const Compare& comp or Compare comp??
+void PriorityQueue<T, Container, Compare>::makeHeap(RandomIt first, RandomIt last, const Compare& comp) {
     const auto size = std::distance(first, last);
     const auto firstNonLeaf = size / 2 - 1;
 
@@ -110,7 +138,7 @@ void PriorityQueue<T, Container, Compare>::makeHeap(RandomIt first, RandomIt las
 
 template <typename T, typename Container, typename Compare>
 template <typename RandomIt>
-void PriorityQueue<T, Container, Compare>::heapify(RandomIt first, RandomIt last, RandomIt target, const Compare& comp) { // const Compare& comp or Compare comp??
+void PriorityQueue<T, Container, Compare>::heapify(RandomIt first, RandomIt last, RandomIt target, const Compare& comp) {
     auto largest = target;
     if(const auto l = getLeftChild(first, last, target); l != last &&  comp(*largest, *l)) {
         largest = l;

@@ -24,7 +24,6 @@ public: // ctors
     /// explicit PriorityQueue( const Compare& compare = Compare(), const Container& cont = Container() ); // until c++11
     PriorityQueue(const Compare& compare, const Container& cont);
     /// PriorityQueue(const Compare& compare, Container&& cont); // rvalue
-
     template <typename InputIt>
     PriorityQueue(InputIt first, InputIt last, const Compare& compare = Compare());	
     /// template< class InputIt >
@@ -33,11 +32,8 @@ public: // ctors
     PriorityQueue(InputIt first, InputIt last, const Compare& compare, const Container& cont);
     /// template <typename InputIt>
     /// PriorityQueue(InputIt first, InputIt last, const Compare& compare, Container&& cont); // rvalue
-
-public: // copy ctors, operator=
     PriorityQueue(const PriorityQueue& other);
     /// PriorityQueue(PriorityQueue&& other); // move ctor
-
     PriorityQueue& operator=(const PriorityQueue& other);	
     /// PriorityQueue& operator=(PriorityQueue&& other); // move operator=
     
