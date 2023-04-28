@@ -57,22 +57,26 @@ public: // member functions
 
 private:
     template <typename RandomIt> // should be InputIt, but standard says RandomIt => slicing
-    void makeHeap(RandomIt first, RandomIt last); /// TODO: make constexpr
+    void makeHeap(RandomIt first, RandomIt last);
     template <typename RandomIt>
-    void makeHeap(RandomIt first, RandomIt last, Compare comp); /// TODO: make constexpr
+    void makeHeap(RandomIt first, RandomIt last, const Compare& comp);
     template <typename RandomIt>
-    void heapify(RandomIt first, RandomIt last, RandomIt target, Compare comp);
-    /// size_t parent(size_t index);
-    template <typename RandIt>
-    RandIt getLeftChild(RandIt first, RandIt last, RandIt parent);
-    template <typename RandIt>
-    RandIt getRightChild(RandIt first, RandIt last, RandIt parent);
-    template <typename RandIt>
-    RandIt getChild(RandIt first, RandIt last, RandIt parent, typename std::iterator_traits<RandIt>::difference_type childId);
+    void heapify(RandomIt first, RandomIt last, RandomIt target, const Compare& comp);
+    template <typename RandomIt>
+    RandomIt getLeftChild(RandomIt first, RandomIt last, RandomIt parent);
+    template <typename RandomIt>
+    RandomIt getRightChild(RandomIt first, RandomIt last, RandomIt parent);
+    template <typename RandomIt>
+    RandomIt getChild(RandomIt first, RandomIt last, RandomIt parent, typename std::iterator_traits<RandomIt>::difference_type childId);
+    template <typename RandomIt>
+    void increaseKey(RandomIt first, RandomIt target);
+    template <typename RandomIt>
+    RandomIt getParent(RandomIt first, RandomIt child);
 
 private:
     Container c_;
     Compare comp_;
+    size_type size_;
 }; // class PriorityQueue
 
 } // namespace pq
