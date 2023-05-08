@@ -2,9 +2,7 @@
 #define PRIORITY_QUEUE_PRIORITY_QUEUE_HPP
 
 #include <functional> // std::less
-#include <iterator> // std::iterator_traits
 #include <vector>
-
 
 namespace pq {
 
@@ -20,15 +18,17 @@ public:
 
 public: // ctors
     PriorityQueue() : PriorityQueue(Compare(), Container()) {}
-    ~PriorityQueue();
     explicit PriorityQueue(const Compare& compare) : PriorityQueue(compare, Container()) {}
     PriorityQueue(const Compare& compare, const Container& cont);
+
     template <typename InputIt>
     PriorityQueue(InputIt first, InputIt last, const Compare& compare = Compare());	
     template <typename InputIt>
     PriorityQueue(InputIt first, InputIt last, const Compare& compare, const Container& cont);
+
     PriorityQueue(const PriorityQueue& other);
     PriorityQueue& operator=(const PriorityQueue& other);	
+    ~PriorityQueue();
 
 public: // member functions
     const_reference top() const;
@@ -37,11 +37,6 @@ public: // member functions
     void push(const value_type& value);
     void pop();
     void swap(PriorityQueue& other) noexcept;
-
-private:
-
-
-
 
 private:
     Container c_;

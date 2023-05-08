@@ -8,21 +8,19 @@
 
 int main() {
 
-    std::vector<int> v = {1, 13, 35, 4, 5, 5};
-    std::vector<int> v2 = {10, 10};
-    pq::PriorityQueue<int> pr(v.begin(), v.end());
+    std::vector<int> v = {1, 13, 35, 4, 5, 5, -6};
 
-
-    pq::PriorityQueue<int, std::vector<int>, std::less<int>> pq(std::less<int>{}, v);
-    pq.push(100);
-    pq.push(101);
-    pq.push(53);
-    pq::PriorityQueue<int, std::vector<int>, std::greater<int>> pp(std::greater<int>{}, v);
-    pp = pr;
+    pq::PriorityQueue<int> p1(v.begin(), v.end());
+    p1.push(100);
+    p1.push(101);
+    p1.push(53);
     
-    while(!pr.empty()) {
-        std::cout << pr.top() << std::endl;
-        pr.pop();
+    pq::PriorityQueue<int> p2(v.begin(), v.end());
+    p1.swap(p2);
+
+    while(!p1.empty()) {
+        std::cout << p1.top() << " -> size: " << p1.size() << std::endl;
+        p1.pop();
     }
 
     // std::cout << pqq.top() << std::endl;

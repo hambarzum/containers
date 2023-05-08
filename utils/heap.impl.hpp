@@ -5,17 +5,12 @@
 
 namespace heap {
 
-template <typename RandomIt>
-void increaseKey(RandomIt first, RandomIt target) {
-    while(std::distance(first, target) > 0 && comp_(*getParent(first, target), *target)) {
+template <typename RandomIt, typename Compare>
+void increaseKey(RandomIt first, RandomIt target, const Compare& comp) {
+    while(std::distance(first, target) > 0 && comp(*getParent(first, target), *target)) {
         std::swap(*getParent(first, target), *target);
         target = getParent(first, target);
     }
-}
-
-template <typename RandomIt>
-void makeHeap(RandomIt first, RandomIt last) {
-    makeHeap(first, last, Compare());
 }
 
 template <typename RandomIt, typename Compare>
@@ -27,7 +22,6 @@ void makeHeap(RandomIt first, RandomIt last, const Compare& comp) {
         heapify(first, last, std::next(first, i - 1), comp);
     }
 }
-
 
 template <typename RandomIt, typename Compare>
 void heapify(RandomIt first, RandomIt last, RandomIt target, const Compare& comp) {

@@ -80,7 +80,7 @@ typename PriorityQueue<T, Container, Compare>::size_type PriorityQueue<T, Contai
 template <typename T, typename Container, typename Compare>
 void PriorityQueue<T, Container, Compare>::push(const typename PriorityQueue<T, Container, Compare>::value_type& value) {
     c_.push_back(value);
-    heap::increaseKey(std::begin(c_), std::next(std::begin(c_), size_ - 1));
+    heap::increaseKey(std::begin(c_), std::next(std::begin(c_), size_ - 1), comp_);
     ++size_;
 }
 
