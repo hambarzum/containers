@@ -44,6 +44,8 @@ private:
     size_type size_;
 }; // class PriorityQueue
 
+/// TODO: implement non-member swap function for PriorityQueue - https://en.cppreference.com/w/cpp/container/priority_queue/swap2
+
 } // namespace pq
 
 #include "priority_queue.impl.hpp"
