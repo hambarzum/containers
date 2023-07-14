@@ -23,7 +23,7 @@ Stack<T, Container>::Stack(const Stack& other)
 
 template <typename T, typename Container>
 auto Stack<T, Container>::operator=(Stack rhs) -> Stack& {
-    c_ = rhs.c_;
+    rhs.swap(*this);
     return *this;
 }
 
@@ -74,7 +74,7 @@ void Stack<T, Container>::push(value_type&& elem) {
 template <typename T, typename Container>
 void Stack<T, Container>::pop() {
     if(c_.empty()) {
-        throw std::underflow_error("[Stack] : trying to pop from an empty stack");
+        throw std::underflow_error("[Stack] : trying to pop from an empty stack.");
     }
     c_.pop_back();
 }
@@ -87,9 +87,11 @@ void Stack<T, Container>::swap(Stack& other) noexcept {
 
 
 // non-member functions-------------------
-template <typename T, typename Container>
-void swap(Stack<T, Container>& lhs, Stack<T, Container>& rhs) noexcept {
-    lhs.swap(rhs);
-}
+namespace std {
+    template <typename T, typename Container>
+    void swap(Stack<T, Container>& lhs, Stack<T, Container>& rhs) noexcept {
+        lhs.swap(rhs);
+    }
+}; // namespace std
 
 #endif // STACK_IMPL_HPP

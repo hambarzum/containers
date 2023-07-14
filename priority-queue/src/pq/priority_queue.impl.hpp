@@ -35,7 +35,7 @@ PriorityQueue<T, Container, Compare>::PriorityQueue(InputIt first, InputIt last,
 }
 
 template <typename T, typename Container, typename Compare>
-PriorityQueue<T, Container, Compare>::PriorityQueue(const PriorityQueue<T, Container, Compare>& other) 
+PriorityQueue<T, Container, Compare>::PriorityQueue(const PriorityQueue& other) 
     : size_{other.size_}
     , comp_{other.comp_}
     , c_{other.c_}
@@ -45,7 +45,7 @@ PriorityQueue<T, Container, Compare>::PriorityQueue(const PriorityQueue<T, Conta
 
 template <typename T, typename Container, typename Compare>
 PriorityQueue<T, Container, Compare>& PriorityQueue<T, Container, Compare>::operator=(PriorityQueue<T, Container, Compare> other) {
-    swap(other);
+    other.swap(*this);
     return *this;
 }
 
@@ -106,9 +106,11 @@ void PriorityQueue<T, Container, Compare>::swap(PriorityQueue<T, Container, Comp
 }
 
 // non-member functions--------------
-template <typename T, typename Container = std::vector<T>, typename Compare>
-void swap(PriorityQueue<T, Container, Compare>& lhs, PriorityQueue<T, Container, Compare>& rhs) {
-    lhs.swap(rhs);
-}
+namespace std { 
+    template <typename T, typename Container = std::vector<T>, typename Compare>
+    void swap(PriorityQueue<T, Container, Compare>& lhs, PriorityQueue<T, Container, Compare>& rhs) noexcept {
+        lhs.swap(rhs);
+    }
+}; // namespace std
 
 #endif // PRIORITY_QUEUE_PRIORITY_QUEUE_IMPL_HPP

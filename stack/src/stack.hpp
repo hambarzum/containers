@@ -21,6 +21,7 @@ public:
 
     Stack(const Stack& other);
     Stack& operator=(Stack rhs); // copy-and-swap idiom
+    // move operator= omitted due to the operator= implemented via copy-and-swap
     Stack(Stack&& other) noexcept;
 
     ~Stack() {}
@@ -40,10 +41,12 @@ private:
     Container c_;
 }; // class Stack
 
-template <typename T, typename Container>
-void swap(Stack<T, Container>& lhs, Stack<T, Container>& rhs) noexcept;
+namespace std {
+    template <typename T, typename Container>
+    void swap(Stack<T, Container>& lhs, Stack<T, Container>& rhs) noexcept;
+}; // namespace std
 
-/// TODO: research and implement non-member comparison functions
+/// TODO: research and implement non-member comparison functions for Stack
 
 #include "stack.impl.hpp"
 

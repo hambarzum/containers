@@ -27,7 +27,8 @@ public: // ctors, dtor
     PriorityQueue(InputIt first, InputIt last, const Compare& compare, const Container& cont);
 
     PriorityQueue(const PriorityQueue& other);
-    PriorityQueue& operator=(PriorityQueue other);
+    PriorityQueue& operator=(PriorityQueue other); // copy-and-swap idiom
+    // move operator= omitted due to the operator= implemented via copy-and-swap
     PriorityQueue(PriorityQueue&& other);
     
     ~PriorityQueue();
@@ -47,9 +48,12 @@ private:
     size_type size_;
 }; // class PriorityQueue
 
-template <typename T, typename Container = std::vector<T>, 
+namespace std {
+    template <typename T, typename Container = std::vector<T>, 
                     typename Compare = std::greater<typename Container::value_type>>
-void swap(PriorityQueue<T, Container, Compare>& lhs, PriorityQueue<T, Container, Compare>& rhs);
+    void swap(PriorityQueue<T, Container, Compare>& lhs, PriorityQueue<T, Container, Compare>& rhs) noexcept;
+}; // namespace std
+
 
 #include "priority_queue.impl.hpp"
 

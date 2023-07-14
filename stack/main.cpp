@@ -17,7 +17,7 @@ int main() {
     std::cout << "s2 top: " << s2.top()++ << std::endl;
     std::cout << "s1 top: " << s.top() << std::endl;
 
-    swap(s, s2);
+    std::swap(s, s2);
 
     std::cout << "s2 top: " << s2.top()++ << std::endl;
     std::cout << "s1 top: " << s.top() << std::endl;

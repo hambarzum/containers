@@ -26,7 +26,7 @@ int main() {
     }
 
     std::cout << "--------------" << std::endl;
-    p3.swap(p2);
+    std::swap(p2, p3);
 
     while(!p2.empty()) {
         std::cout << p2.top() << std::endl;
