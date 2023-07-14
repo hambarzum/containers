@@ -4,11 +4,11 @@
 #include <functional> // std::less
 #include <vector>
 
-namespace pq {
 
-template <typename T, typename Container = std::vector<T>, typename Compare = std::greater<typename Container::value_type>>
+template <typename T, typename Container = std::vector<T>, 
+                    typename Compare = std::greater<typename Container::value_type>>
 class PriorityQueue {
-public:
+public: // associated types
     using container_type = Container;
     using value_compare = Compare;
     using value_type = typename Container::value_type;
@@ -16,7 +16,7 @@ public:
     using reference = typename Container::reference;
     using const_reference = typename Container::const_reference;
 
-public: // ctors
+public: // ctors, dtor
     PriorityQueue() : PriorityQueue(Compare(), Container()) {}
     explicit PriorityQueue(const Compare& compare) : PriorityQueue(compare, Container()) {}
     PriorityQueue(const Compare& compare, const Container& cont);
@@ -27,7 +27,9 @@ public: // ctors
     PriorityQueue(InputIt first, InputIt last, const Compare& compare, const Container& cont);
 
     PriorityQueue(const PriorityQueue& other);
-    PriorityQueue& operator=(const PriorityQueue& other);	
+    PriorityQueue& operator=(PriorityQueue other);
+    PriorityQueue(PriorityQueue&& other);
+    
     ~PriorityQueue();
 
 public: // member functions
@@ -35,6 +37,7 @@ public: // member functions
     [[nodiscard]] bool empty() const;
     size_type size() const;
     void push(const value_type& value);
+    /// TODO: implement emplace() with variadic templates
     void pop();
     void swap(PriorityQueue& other) noexcept;
 
@@ -44,9 +47,9 @@ private:
     size_type size_;
 }; // class PriorityQueue
 
-/// TODO: implement non-member swap function for PriorityQueue - https://en.cppreference.com/w/cpp/container/priority_queue/swap2
-
-} // namespace pq
+template <typename T, typename Container = std::vector<T>, 
+                    typename Compare = std::greater<typename Container::value_type>>
+void swap(PriorityQueue<T, Container, Compare>& lhs, PriorityQueue<T, Container, Compare>& rhs);
 
 #include "priority_queue.impl.hpp"
 

@@ -1,13 +1,12 @@
 #ifndef PRIORITY_QUEUE_PRIORITY_QUEUE_IMPL_HPP
 #define PRIORITY_QUEUE_PRIORITY_QUEUE_IMPL_HPP
 
-#include "../utils/heap.hpp"
+#include "../heap/heap.hpp"
 #include "priority_queue.hpp"
 
-#include <stdexcept> // std::underflow_error
 #include <iterator> // std::distance, std::iterator_traits
+#include <stdexcept> // std::underflow_error
 
-namespace pq {
 
 // constructors -----------------------------
 template <typename T, typename Container, typename Compare>
@@ -28,12 +27,12 @@ PriorityQueue<T, Container, Compare>::PriorityQueue(InputIt first, InputIt last,
 template <typename T, typename Container, typename Compare>
 template <typename InputIt>
 PriorityQueue<T, Container, Compare>::PriorityQueue(InputIt first, InputIt last, const Compare& compare, const Container& cont)
-    : c_{first, last}, comp_{compare}
+    : c_{cont}, comp_{compare}
 {
-    c_.insert(std::end(c_), std::begin(cont), std::end(cont));
+    c_.insert(c_.end(), first, last);
     heap::makeHeap(std::begin(c_), std::end(c_), comp_);
     size_ = c_.size();
-} // what's the semantics of this??
+}
 
 template <typename T, typename Container, typename Compare>
 PriorityQueue<T, Container, Compare>::PriorityQueue(const PriorityQueue<T, Container, Compare>& other) 
@@ -45,20 +44,23 @@ PriorityQueue<T, Container, Compare>::PriorityQueue(const PriorityQueue<T, Conta
 }
 
 template <typename T, typename Container, typename Compare>
-PriorityQueue<T, Container, Compare>& PriorityQueue<T, Container, Compare>::operator=(const PriorityQueue<T, Container, Compare>& other) {
-    if(this == &other) {
-        return *this;
-    }
-    c_ = other.c_;
-    size_ = other.size_;
-    comp_ = other.comp_;
-
+PriorityQueue<T, Container, Compare>& PriorityQueue<T, Container, Compare>::operator=(PriorityQueue<T, Container, Compare> other) {
+    swap(other);
     return *this;
-} // any exceptions expected??
+}
+
+template <typename T, typename Container, typename Compare>
+PriorityQueue<T, Container, Compare>::PriorityQueue(PriorityQueue<T, Container, Compare>&& other) 
+    : size_{other.size_}
+    , c_{std::move(other.c_)}
+    , comp_{std::move(other.comp_)}
+{
+
+}
 
 template <typename T, typename Container, typename Compare>
 PriorityQueue<T, Container, Compare>::~PriorityQueue() {
-    // anything??
+
 }
 
 // member functions ----------------------------
@@ -103,7 +105,10 @@ void PriorityQueue<T, Container, Compare>::swap(PriorityQueue<T, Container, Comp
     swap(size_, other.size_);
 }
 
-} // namespace pq
-
+// non-member functions--------------
+template <typename T, typename Container = std::vector<T>, typename Compare>
+void swap(PriorityQueue<T, Container, Compare>& lhs, PriorityQueue<T, Container, Compare>& rhs) {
+    lhs.swap(rhs);
+}
 
 #endif // PRIORITY_QUEUE_PRIORITY_QUEUE_IMPL_HPP
